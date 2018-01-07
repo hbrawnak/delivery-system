@@ -19,6 +19,7 @@ Route::post('/login', [
     'uses' => 'UserController@login',
     'as' => 'user.login'
 ]);
+/*Auth Middleware starts here*/
 Route::get('/dashboard', [
     'uses' => 'UserController@dashboard',
     'as' => 'dashboard'
@@ -52,6 +53,7 @@ Route::prefix('/a/admin')->group(function () {
         'as' => 'post.login'
     ]);
 
+    /*Admin Middleware starts here*/
     Route::get('/dashboard', [
         'uses' => 'AdminController@dashboard',
         'as' => 'admin.dashboard'
@@ -68,13 +70,25 @@ Route::prefix('/a/admin')->group(function () {
         'uses' => 'AdminController@postNewUser',
         'as' => 'postNewUser'
     ]);
-    Route::get('delivery', [
+    Route::get('deliveries', [
         'uses' => 'AdminController@delivery',
         'as' => 'delivery'
     ]);
-    Route::get('/status/{id}', [
+    Route::get('/{id}/status', [
         'uses' => 'AdminController@updateStatus',
         'as' => 'updateStatus'
+    ]);
+    Route::get('/{id}/progress', [
+        'uses' => 'AdminController@inProgress',
+        'as' => 'progress'
+    ]);
+    Route::get('/{id}/delivery', [
+        'uses' => 'AdminController@delivered',
+        'as' => 'delivered'
+    ]);
+    Route::get('/{id}/returned', [
+        'uses' => 'AdminController@returned',
+        'as' => 'returned'
     ]);
     Route::get('/logout', [
         'uses' => 'AdminController@logout',

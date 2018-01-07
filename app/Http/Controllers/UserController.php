@@ -48,12 +48,18 @@ class UserController extends Controller
         $user_id = Auth::id();
         $total_delivery = Delivery::where('user_id', $user_id)->count();
         $pending_delivery = Delivery::where('user_id', $user_id)->where('status', 'Pending')->count();
-        $done_delivery = Delivery::where('user_id', $user_id)->where('status', 'Done')->count();
-        $delivery_amount_done = Delivery::where('user_id', $user_id)->where('status', ['Done'])->sum('after_charging_amount');
-        $delivery_amount_pending = Delivery::where('user_id', $user_id)->where('status', 'Pending')->sum('after_charging_amount');
-        $total_delivery_amount = Delivery::where('user_id', $user_id)->sum('after_charging_amount');
+        $received_delivery = Delivery::where('user_id', $user_id)->where('status', 'Received')->count();
+        $inprogress_delivery = Delivery::where('user_id', $user_id)->where('status', 'In Progress')->count();
+        $delivered = Delivery::where('user_id', $user_id)->where('status', 'Delivered')->count();
+        $returned_delivered = Delivery::where('user_id', $user_id)->where('status', 'Returned')->count();
 
-        return view('user.index', compact('total_delivery','delivery_amount_done', 'pending_delivery', 'delivery_amount_pending', 'total_delivery_amount', 'done_delivery'));
+
+        $delivery_amount_done = Delivery::where('user_id', $user_id)->where('status', ['Delivered'])->sum('after_charging_amount');
+        $delivery_amount_returned = Delivery::where('user_id', $user_id)->where('status', ['Returned'])->sum('returned_on');
+        //$delivery_amount_pending = Delivery::where('user_id', $user_id)->where('status', 'Pending')->sum('after_charging_amount');
+        //$total_delivery_amount = Delivery::where('user_id', $user_id)->sum('after_charging_amount');
+
+        return view('user.index', compact('total_delivery','received_delivery','delivered','returned_delivered','delivery_amount_done', 'pending_delivery', 'delivery_amount_returned', 'inprogress_delivery'));
     }
 
     public function deliveries()
@@ -100,8 +106,6 @@ class UserController extends Controller
         } else {
             return redirect()->route('deliveryCreate')->with(['error' => 'something went wrong. Please try again!']);
         }
-
-
 
     }
 

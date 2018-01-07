@@ -42,7 +42,7 @@
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>P</b>71</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Pharma</b>71</span>
+            <span class="logo-lg"><b>Ticket</b>Chai</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -57,7 +57,7 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="{{ asset('admin') }}/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Pharma71</span>
+                            <span class="hidden-xs">TicketChai</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
@@ -65,7 +65,7 @@
                                 <img src="{{ asset('admin') }}/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                 <p>
-                                    Pharma71
+                                    TicketChai
                                 </p>
                             </li>
                             <li class="user-footer">

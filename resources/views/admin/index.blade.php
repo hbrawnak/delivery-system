@@ -47,7 +47,7 @@
 
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <div class="small-box bg-aqua-gradient">
+                    <div class="small-box bg-aqua">
                         <div class="inner">
                             <h3>{{ $pending_delivery }}</h3>
                             <p>Pending Delivery</p>
@@ -61,10 +61,52 @@
 
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
-                    <div class="small-box bg-aqua">
+                    <div class="small-box bg-green-gradient">
+                        <div class="inner">
+                            <h3>{{ $received_delivery }}</h3>
+                            <p>Received Delivery</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h3>{{ $inprogress_delivery }}</h3>
+                            <p>In Progress Delivery</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-aqua-active">
                         <div class="inner">
                             <h3>{{ $done_delivery }}</h3>
                             <p>Completed Delivery</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-aqua-gradient">
+                        <div class="inner">
+                            <h3>{{ $returned_delivery }}</h3>
+                            <p>Returned Delivery</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
@@ -93,6 +135,20 @@
                         <div class="inner">
                             <h3>{{ $total_delivery_amount_after_charge }}</h3>
                             <p>After charge amount</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-shopping-cart"></i>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-fuchsia">
+                        <div class="inner">
+                            <h3>{{ $return_delivery_amount }}</h3>
+                            <p>Returned Delivery Amount</p>
                         </div>
                         <div class="icon">
                             <i class="fa fa-shopping-cart"></i>

@@ -11,15 +11,15 @@
 
         <!-- Main content -->
         <section class="content">
-            @if(Session::has('message'))
+            @if(Session::has('success'))
                 <div class="alert alert-success">
-                    {{ Session::get('message') }}
+                    {{ Session::get('success') }}
                 </div>
             @endif
             @if(Session::has('errorMessage'))
                 <div class="alert alert-danger">
                     <div class="col-md-4 col-md-offset-4 error">
-                        {{ Session::get('errorMessage') }}
+                        {{ Session::get('error') }}
                     </div>
                 </div>
             @endif
@@ -43,8 +43,8 @@
                                     <th>Recipient Address</th>
                                     <th>Status</th>
                                     <th>Amount</th>
-                                    <th>Charge</th>
                                     <th>After Charge</th>
+                                    <th>Returned</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -58,14 +58,34 @@
                                         <td>{{ $delivery->recipient_address }}</td>
                                         <td>{{ $delivery->status }}</td>
                                         <td>{{ $delivery->amount }}</td>
-                                        <td>{{ $delivery->charge }}</td>
-                                        <td>{{ $delivery->after_charging_amount }}</td>
                                         <td>
-                                            @if($delivery->status == 'Pending')
-                                            <a href="{{ route('updateStatus', ['id' => $delivery->id]) }}" class="btn btn-danger">Done</a>
-                                            @elseif($delivery->status == 'Done')
-                                                <a href="{{ route('updateStatus', ['id' => $delivery->id]) }}" class="btn btn-info">Pending</a>
+                                            @if($delivery->status != 'Returned')
+                                            {{ $delivery->after_charging_amount }}
                                             @endif
+                                        </td>
+
+                                        <td>{{ $delivery->returned_on }}</td>
+                                        <td>
+
+                                            <div class="dropdown">
+                                                <button class="btn btn-default" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-cogs" aria-hidden="true"></i>
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dLabel">
+                                                    @if($delivery->status == 'Pending')
+                                                    <li><a href="{{ route('updateStatus', ['id' => $delivery->id]) }}">Received</a></li>
+                                                    @elseif($delivery->status == 'Received')
+                                                    <li><a href="{{ route('updateStatus', ['id' => $delivery->id]) }}">Pending</a></li>
+                                                    @endif
+                                                    <li><a href="{{ route('progress', ['id' => $delivery->id]) }}">In Progress</a></li>
+                                                    <li><a href="{{ route('delivered', ['id' => $delivery->id]) }}">Delivered</a></li>
+                                                     <li role="separator" class="divider"></li>
+                                                    <li><a href="{{ route('returned', ['id' => $delivery->id]) }}">Return</a></li>
+                                                </ul>
+                                            </div>
+
+
                                         </td>
                                     </tr>
                                 @endforeach

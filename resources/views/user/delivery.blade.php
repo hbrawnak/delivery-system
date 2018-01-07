@@ -45,6 +45,7 @@
                                     <th>Status</th>
                                     <th>Amount</th>
                                     <th>Charge</th>
+                                    <th>Returned</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -55,8 +56,13 @@
                                         <td>{{ $delivery->recipient_mobile }}</td>
                                         <td>{{ $delivery->recipient_address }}</td>
                                         <td>{{ $delivery->status }}</td>
+                                        @if($delivery->status == 'Returned')
+                                        <td>{{ $delivery->amount }}</td>
+                                        @else
                                         <td>{{ $delivery->after_charging_amount }}</td>
+                                        @endif
                                         <td>{{ $delivery->charge }}</td>
+                                        <td>{{ $delivery->returned_on }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -69,6 +75,7 @@
                                     <th>Status</th>
                                     <th>Amount</th>
                                     <th>Charge</th>
+                                    <th>Returned</th>
                                 </tr>
                                 </tfoot>
                             </table>

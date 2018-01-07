@@ -49,11 +49,16 @@ class AdminController extends Controller
     {
         $users = User::count();
         $delivery = Delivery::count();
-        $done_delivery = Delivery::where('status', 'done')->count();
-        $pending_delivery = Delivery::where('status', 'pending')->count();
+        $pending_delivery = Delivery::where('status', 'Pending')->count();
+        $received_delivery = Delivery::where('status', 'Received')->count();
+        $inprogress_delivery = Delivery::where('status', 'In Progress')->count();
+        $done_delivery = Delivery::where('status', 'Delivered')->count();
+        $returned_delivery = Delivery::where('status', 'Returned')->count();
         $total_delivery_amount_after_charge = Delivery::sum('after_charging_amount');
         $total_delivery_amount = Delivery::sum('amount');
-        return view('admin.index', compact('users',  'delivery','done_delivery','pending_delivery','total_delivery_amount','total_delivery_amount_after_charge'));
+        $return_delivery_amount = Delivery::sum('returned_on');
+
+        return view('admin.index', compact('users',  'delivery','received_delivery','inprogress_delivery','done_delivery','received_delivery','pending_delivery','returned_delivery','total_delivery_amount','total_delivery_amount_after_charge','return_delivery_amount'));
     }
 
     public function users()
@@ -114,24 +119,84 @@ class AdminController extends Controller
             {
                 DB::table('deliveries')
                     ->where('id', $id)
-                    ->update(['status' => 'Done']);
+                    ->update(['status' => 'Received']);
 
-                return redirect()->back();
+                return redirect()->back()->with(['success' => 'Delivery received.']);
 
             }
-            elseif ($delivery->status == 'Done')
+            elseif ($delivery->status == 'Received')
             {
                 DB::table('deliveries')
                     ->where('id', $id)
                     ->update(['status' => 'Pending']);
 
-                return redirect()->back();
+                return redirect()->back()->with(['success' => 'Delivery pending.']);
             }
         } else {
 
-            return redirect()->back()->with(['error' => 'Something went wrong']);
+            return redirect()->back()->with(['error' => 'Something went wrong.']);
         }
 
+    }
+
+    public function inProgress($id)
+    {
+        $delivery = Delivery::find($id);
+
+        if ($delivery)
+        {
+            DB::table('deliveries')
+                ->where('id', $id)
+                ->update(['status' => 'In Progress']);
+
+            return redirect()->back()->with(['success' => 'Delivery in progress.']);
+        } else {
+
+            return redirect()->back()->with(['error' => 'Something went wrong.']);
+        }
+    }
+
+    public function delivered($id)
+    {
+        $delivery = Delivery::find($id);
+
+        if ($delivery)
+        {
+            DB::table('deliveries')
+                ->where('id', $id)
+                ->update(['status' => 'Delivered']);
+
+            return redirect()->back()->with(['success' => 'Product is delivered.']);
+        } else {
+
+            return redirect()->back()->with(['error' => 'Something went wrong.']);
+        }
+    }
+
+    public function returned($id)
+    {
+        $delivery = Delivery::find($id);
+
+        $amount = $delivery->amount;
+        $after_charging_amount = $delivery->after_charging_amount;
+        $rest_amount = $amount - $after_charging_amount;
+
+        if (!$delivery)
+        {
+            return redirect()->back()->with(['error' => 'Something went wrong.']);
+
+        } else
+        {
+            DB::table('deliveries')
+                ->where('id', $id)
+                ->update([
+                    'status' => 'Returned',
+                    'returned_on' => $after_charging_amount,
+                    'amount' => $rest_amount
+                ]);
+
+            return redirect()->back()->with(['success' => 'Product is returned.']);
+        }
     }
 
     public function logout()
