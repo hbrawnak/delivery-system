@@ -19,7 +19,7 @@ Route::post('/login', [
     'uses' => 'UserController@login',
     'as' => 'user.login'
 ]);
-/*Auth Middleware starts here*/
+/* Auth Middleware starts here*/
 Route::get('/dashboard', [
     'uses' => 'UserController@dashboard',
     'as' => 'dashboard'
@@ -35,6 +35,10 @@ Route::get('/delivery/create', [
 Route::post('/delivery/post', [
     'uses' => 'UserController@postNewDelivery',
     'as' => 'postNewDelivery'
+]);
+Route::get('/invoice', [
+    'uses' => 'UserController@invoice',
+    'as' => 'invoice'
 ]);
 Route::get('/logout', [
     'uses' => 'UserController@logout',

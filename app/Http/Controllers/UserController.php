@@ -109,6 +109,11 @@ class UserController extends Controller
 
     }
 
+    public function invoice()
+    {
+        return view('user.invoice');
+    }
+
     function generateRandomString($length = 6) {
         $characters = 'ABCDEFGHIJKLM0123456789NOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);

@@ -16,13 +16,13 @@
                     {{ Session::get('success') }}
                 </div>
             @endif
-            @if(Session::has('errorMessage'))
+
+            @if(Session::has('error'))
                 <div class="alert alert-danger">
-                    <div class="col-md-4 col-md-offset-4 error">
                         {{ Session::get('error') }}
-                    </div>
                 </div>
             @endif
+
             <div class="row">
                 <div class="col-xs-12">
 

@@ -143,16 +143,25 @@ class AdminController extends Controller
     {
         $delivery = Delivery::find($id);
 
-        if ($delivery)
+        if (!$delivery)
         {
-            DB::table('deliveries')
-                ->where('id', $id)
-                ->update(['status' => 'In Progress']);
+            return redirect()->back()->with(['error' => 'Something went wrong.']);
 
-            return redirect()->back()->with(['success' => 'Delivery in progress.']);
         } else {
 
-            return redirect()->back()->with(['error' => 'Something went wrong.']);
+            if ($delivery->status != 'Returned')
+            {
+                DB::table('deliveries')
+                    ->where('id', $id)
+                    ->update(['status' => 'In Progress']);
+
+                return redirect()->back()->with(['success' => 'Delivery in progress.']);
+
+            } else {
+
+                return redirect()->back()->with(['error' => 'Delivery is already returned. Please make a new delivery.']);
+            }
+
         }
     }
 
@@ -160,16 +169,27 @@ class AdminController extends Controller
     {
         $delivery = Delivery::find($id);
 
-        if ($delivery)
+        if (!$delivery)
         {
-            DB::table('deliveries')
-                ->where('id', $id)
-                ->update(['status' => 'Delivered']);
+            return redirect()->back()->with(['error' => 'Something went wrong.']);
 
-            return redirect()->back()->with(['success' => 'Product is delivered.']);
         } else {
 
-            return redirect()->back()->with(['error' => 'Something went wrong.']);
+            if ($delivery->status != 'Returned')
+            {
+                DB::table('deliveries')
+                    ->where('id', $id)
+                    ->update([
+                        'status' => 'Delivered',
+                    ]);
+
+                return redirect()->back()->with(['success' => 'Product is delivered.']);
+
+            } else {
+
+                return redirect()->back()->with(['error' => 'Delivery is already returned. Please make a new delivery.']);
+            }
+
         }
     }
 
@@ -187,15 +207,24 @@ class AdminController extends Controller
 
         } else
         {
-            DB::table('deliveries')
-                ->where('id', $id)
-                ->update([
-                    'status' => 'Returned',
-                    'returned_on' => $after_charging_amount,
-                    'amount' => $rest_amount
-                ]);
+            if ($delivery->status != 'Returned')
+            {
+                DB::table('deliveries')
+                    ->where('id', $id)
+                    ->update([
+                        'status' => 'Returned',
+                        'returned_on' => $after_charging_amount,
+                        'amount' => $rest_amount,
+                        'after_charging_amount' => 0
+                    ]);
 
-            return redirect()->back()->with(['success' => 'Product is returned.']);
+                return redirect()->back()->with(['success' => 'Product is returned.']);
+                
+            } else {
+
+                return redirect()->back()->with(['error' => 'Product is already returned.']);
+            }
+
         }
     }
 
